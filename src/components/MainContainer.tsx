@@ -13,32 +13,45 @@ import setSplitText from "./utils/splitText";
 const TechStack = lazy(() => import("./TechStack"));
 
 const MainContainer = ({ children }: PropsWithChildren) => {
-  const [isDesktopView, setIsDesktopView] = useState<boolean>(
-    window.innerWidth > 1024
-  );
+  const [isDesktopView, setIsDesktopView] = useState<boolean>(false);
 
   useEffect(() => {
-    const resizeHandler = () => {
+    // Initial check
+    const isDesktop = window.innerWidth > 1024;
+    setIsDesktopView(isDesktop);
+    
+    // Split text sirf desktop par chalayenge taaki mobile crash na ho
+    if (isDesktop) {
       setSplitText();
-      setIsDesktopView(window.innerWidth > 1024);
+    }
+
+    const resizeHandler = () => {
+      const checkDesktop = window.innerWidth > 1024;
+      setIsDesktopView(checkDesktop);
+      if (checkDesktop) {
+        setSplitText();
+      }
     };
-    resizeHandler();
+
     window.addEventListener("resize", resizeHandler);
     return () => {
       window.removeEventListener("resize", resizeHandler);
     };
-  }, [isDesktopView]);
+  }, []);
 
   return (
     <div className="container-main">
-      <Cursor />
+      {isDesktopView && <Cursor />}
       <Navbar />
       <SocialIcons />
-      {isDesktopView && children}
-      <div id="smooth-wrapper">
-        <div id="smooth-content">
+      
+      {/* ScrollSmoother wrapper ko mobile par simple div treat kar rahe hain */}
+      <div id={isDesktopView ? "smooth-wrapper" : "mobile-wrapper"}>
+        <div id={isDesktopView ? "smooth-content" : "mobile-content"}>
           <div className="container-main">
-            <Landing>{!isDesktopView && children}</Landing>
+            <Landing>
+              {!isDesktopView && children}
+            </Landing>
             <About />
             <WhatIDo />
             <Career />
