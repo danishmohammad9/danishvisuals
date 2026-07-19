@@ -24,7 +24,23 @@ export const LoadingProvider = ({ children }: PropsWithChildren) => {
     setIsLoading,
     setLoading,
   };
-  useEffect(() => {}, [loading]);
+
+  useEffect(() => {
+    let percent = 0;
+    // Simulate loading progress automatically to decouple it from Three.js loading triggers
+    const interval = setInterval(() => {
+      if (percent < 100) {
+        // Increment progressively
+        const step = Math.floor(Math.random() * 8) + 3;
+        percent = Math.min(100, percent + step);
+        setLoading(percent);
+      } else {
+        clearInterval(interval);
+      }
+    }, 80);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <LoadingContext.Provider value={value as LoadingType}>
