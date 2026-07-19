@@ -96,9 +96,11 @@ const MainContainer = ({ children }: MainContainerProps) => {
               <WhatIDo />
               <Career />
               <Work />
-              <Suspense fallback={<div>Loading Tech Stack....</div>}>
-                <TechStack />
-              </Suspense>
+              <div className="hidden lg:block">
+                <Suspense fallback={<div>Loading Tech Stack....</div>}>
+                  <TechStack />
+                </Suspense>
+              </div>
               <Contact />
             </div>
           </div>
