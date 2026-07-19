@@ -11,9 +11,12 @@ const App = () => {
       <LoadingProvider>
         <Suspense fallback={<div style={{ color: 'white', textAlign: 'center', marginTop: '20%' }}>Loading...</div>}>
           <MainContainer>
-            <Suspense fallback={null}>
-              <CharacterModel />
-            </Suspense>
+            {/* Tailwind lagaya: Mobile par hide rahega (crash nahi hoga), Laptop par character bindas dikhega */}
+            <div className="hidden md:block w-full h-full">
+              <Suspense fallback={null}>
+                <CharacterModel />
+              </Suspense>
+            </div>
           </MainContainer>
         </Suspense>
       </LoadingProvider>

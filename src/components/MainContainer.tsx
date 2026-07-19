@@ -21,7 +21,10 @@ const MainContainer = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="container-main">
-      <Cursor />
+      {/* Cursor ko mobile par responsive hide karne ke liye wrap kiya */}
+      <div className="hidden md:block">
+        <Cursor />
+      </div>
       <Navbar />
       <SocialIcons />
       
@@ -35,9 +38,14 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <WhatIDo />
             <Career />
             <Work />
-            <Suspense fallback={<div>Loading Tech Stack....</div>}>
-              <TechStack />
-            </Suspense>
+            
+            {/* TechStack ko mobile par safe rakhne ke liye wrap kiya taaki phone crash na ho */}
+            <div className="hidden md:block">
+              <Suspense fallback={<div>Loading Tech Stack....</div>}>
+                <TechStack />
+              </Suspense>
+            </div>
+            
             <Contact />
           </div>
         </div>
