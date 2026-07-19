@@ -32,9 +32,7 @@ h6 {
   font-family: "Geist", sans-serif;
 }
 body {
-  overflow-y: auto;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 a {
   color: inherit;
