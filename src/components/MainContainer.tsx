@@ -1,49 +1,36 @@
-import { lazy, PropsWithChildren, useEffect, Suspense } from "react";
-import About from "./About";
-import Career from "./Career";
-import Contact from "./Contact";
-import Cursor from "./Cursor";
-import Landing from "./Landing";
-import Navbar from "./Navbar";
-import SocialIcons from "./SocialIcons";
-import WhatIDo from "./WhatIDo";
-import Work from "./Work";
-import setSplitText from "./utils/splitText";
+import { lazy, Suspense, useEffect, useState } from "react";
+import "./App.css";
 
-const TechStack = lazy(() => import("./TechStack"));
+const CharacterModel = lazy(() => import("./components/Character"));
+const MainContainer = lazy(() => import("./components/MainContainer"));
+import { LoadingProvider } from "./context/LoadingProvider";
 
-const MainContainer = ({ children }: PropsWithChildren) => {
+const App = () => {
+  const [isDesktop, setIsDesktop] = useState<boolean>(false);
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth > 1024) {
-      setSplitText();
+    // Component mount hone ke baad screen size check karega taaki loader 0% par na atke
+    if (typeof window !== "undefined") {
+      setIsDesktop(window.innerWidth > 1024);
     }
   }, []);
 
   return (
-    <div className="container-main">
-      <Cursor />
-      <Navbar />
-      <SocialIcons />
-      
-      <div id="smooth-wrapper">
-        <div id="smooth-content">
-          <div className="container-main">
-            <Landing>
-              {children}
-            </Landing>
-            <About />
-            <WhatIDo />
-            <Career />
-            <Work />
-            <Suspense fallback={<div>Loading Tech Stack....</div>}>
-              <TechStack />
-            </Suspense>
-            <Contact />
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <LoadingProvider>
+        <Suspense fallback={<div style={{ color: 'white', textAlign: 'center', marginTop: '20%' }}>Loading...</div>}>
+          <MainContainer>
+            {/* Laptop par 3D model load hoga, phone par skip ho jayega taaki lag bilkul zero ho sake */}
+            {isDesktop && (
+              <Suspense fallback={null}>
+                <CharacterModel />
+              </Suspense>
+            )}
+          </MainContainer>
+        </Suspense>
+      </LoadingProvider>
+    </>
   );
 };
 
-export default MainContainer;
+export default App;
