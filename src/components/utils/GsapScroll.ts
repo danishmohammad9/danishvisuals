@@ -133,6 +133,12 @@ export function setCharTimeline(
 }
 
 export function setAllTimeline() {
+  if (window.innerWidth <= 1024) {
+    gsap.set(".career-timeline", { maxHeight: "100%", opacity: 1 });
+    gsap.set(".career-info-box", { opacity: 1 });
+    return;
+  }
+
   const careerTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: ".career-section",
@@ -149,7 +155,6 @@ export function setAllTimeline() {
       { maxHeight: "100%", duration: 0.5 },
       0
     )
-
     .fromTo(
       ".career-timeline",
       { opacity: 0 },
@@ -178,13 +183,6 @@ export function setAllTimeline() {
       ".career-section",
       { y: 0 },
       { y: "20%", duration: 0.5, delay: 0.2 },
-      0
-    );
-  } else {
-    careerTimeline.fromTo(
-      ".career-section",
-      { y: 0 },
-      { y: 0, duration: 0.5, delay: 0.2 },
       0
     );
   }
