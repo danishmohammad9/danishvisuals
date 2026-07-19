@@ -1,36 +1,108 @@
-import { lazy, Suspense, useEffect, useState } from "react";
-import "./App.css";
+import React, { lazy, Suspense, useEffect, useState } from "react";
+import About from "./About";
+import Career from "./Career";
+import Contact from "./Contact";
+import Cursor from "./Cursor";
+import Landing from "./Landing";
+import Navbar from "./Navbar";
+import SocialIcons from "./SocialIcons";
+import WhatIDo from "./WhatIDo";
+import Work from "./Work";
+import setSplitText from "./utils/splitText";
+import { useLoading } from "../context/LoadingProvider";
+import { setProgress } from "./Loading";
 
-const CharacterModel = lazy(() => import("./components/Character"));
-const MainContainer = lazy(() => import("./components/MainContainer"));
-import { LoadingProvider } from "./context/LoadingProvider";
+const TechStack = lazy(() => import("./TechStack"));
 
-const App = () => {
-  const [isDesktop, setIsDesktop] = useState<boolean>(false);
+interface MainContainerProps {
+  children?: React.ReactNode;
+}
 
-  useEffect(() => {
-    // Component mount hone ke baad screen size check karega taaki loader 0% par na atke
-    if (typeof window !== "undefined") {
-      setIsDesktop(window.innerWidth > 1024);
-    }
-  }, []);
+const MobileTechStack = () => {
+  const imageUrls = [
+    "/images/premiere.png",
+    "/images/aftereffects.png",
+    "/images/davinci.png",
+    "/images/photoshop.png",
+    "/images/illustrator.png",
+    "/images/audition.png",
+    "/images/blender.png",
+    "/images/cinema4d.png",
+  ];
 
   return (
-    <>
-      <LoadingProvider>
-        <Suspense fallback={<div style={{ color: 'white', textAlign: 'center', marginTop: '20%' }}>Loading...</div>}>
-          <MainContainer>
-            {/* Laptop par 3D model load hoga, phone par skip ho jayega taaki lag bilkul zero ho sake */}
-            {isDesktop && (
-              <Suspense fallback={null}>
-                <CharacterModel />
-              </Suspense>
-            )}
-          </MainContainer>
-        </Suspense>
-      </LoadingProvider>
-    </>
+    <div className="techstack">
+      <h2> My Techstack</h2>
+      <div className="grid grid-cols-4 gap-6 max-w-md mx-auto pt-[240px] px-4 justify-items-center">
+        {imageUrls.map((url, idx) => {
+          const name = url.split("/").pop()?.replace(".png", "") || "";
+          return (
+            <div
+              key={idx}
+              className="flex items-center justify-center p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:scale-110 active:scale-95 transition-all duration-300 w-16 h-16 sm:w-20 sm:h-20"
+            >
+              <img
+                src={url}
+                alt={name}
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain filter drop-shadow-[0_0_8px_rgba(194,164,255,0.3)]"
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
-export default App;
+const MainContainer = ({ children }: MainContainerProps) => {
+  const { setLoading } = useLoading();
+  const [isDesktop, setIsDesktop] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const desktop = window.innerWidth > 1024;
+      setIsDesktop(desktop);
+
+      if (desktop) {
+        setSplitText();
+      } else {
+        // Run mobile simulated progress loading since CharacterModel is not mounted
+        const progress = setProgress((val) => setLoading(val));
+        const timer = setTimeout(() => {
+          progress.loaded();
+        }, 800);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [setLoading]);
+
+  return (
+    <div className="container-main">
+      {isDesktop && <Cursor />}
+      <Navbar />
+      <SocialIcons />
+
+      <div id="smooth-wrapper">
+        <div id="smooth-content">
+          <div className="container-main">
+            <Landing>{children}</Landing>
+            <About />
+            <WhatIDo />
+            <Career />
+            <Work />
+            {isDesktop ? (
+              <Suspense fallback={<div>Loading Tech Stack....</div>}>
+                <TechStack />
+              </Suspense>
+            ) : (
+              <MobileTechStack />
+            )}
+            <Contact />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MainContainer;
