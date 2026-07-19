@@ -72,25 +72,33 @@ const MainContainer = ({ children }: MainContainerProps) => {
       <Navbar />
       <SocialIcons />
 
-      <div id="smooth-wrapper">
-        <div id="smooth-content">
-          <div className="container-main">
-            <Landing>{children}</Landing>
-            <About />
-            <WhatIDo />
-            <Career />
-            <Work />
-            {isDesktop ? (
+      {isDesktop ? (
+        <div id="smooth-wrapper">
+          <div id="smooth-content">
+            <div className="container-main">
+              <Landing>{children}</Landing>
+              <About />
+              <WhatIDo />
+              <Career />
+              <Work />
               <Suspense fallback={<div>Loading Tech Stack....</div>}>
                 <TechStack />
               </Suspense>
-            ) : (
-              <MobileTechStack />
-            )}
-            <Contact />
+              <Contact />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="container-main">
+          <Landing>{children}</Landing>
+          <About />
+          <WhatIDo />
+          <Career />
+          <Work />
+          <MobileTechStack />
+          <Contact />
+        </div>
+      )}
     </div>
   );
 };
