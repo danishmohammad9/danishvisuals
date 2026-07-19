@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, useEffect, useState } from "react";
+import { lazy, PropsWithChildren, useEffect, useState, Suspense } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -33,7 +33,6 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       <div id="smooth-wrapper" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
         <div id="smooth-content" style={{ willChange: "transform" }}>
           <div className="container-main">
-            {/* Yahan bina kisi condition ke children (Character) ko wapas render kar rahe hain */}
             <Landing>
               {children}
             </Landing>
