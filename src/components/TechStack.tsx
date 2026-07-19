@@ -126,13 +126,27 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
 
 const TechStack = () => {
   const [isActive, setIsActive] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setIsDesktop(window.innerWidth > 1024);
+      };
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const threshold = document
-        .getElementById("work")!
-        .getBoundingClientRect().top;
+      const workEl = document.getElementById("work");
+      if (!workEl) return;
+      const threshold = workEl.getBoundingClientRect().top;
       setIsActive(scrollY > threshold);
     };
     document.querySelectorAll(".header a").forEach((elem) => {
@@ -150,7 +164,7 @@ const TechStack = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isDesktop]);
   const materials = useMemo(() => {
     return textures.map(
       (texture) =>
@@ -165,6 +179,8 @@ const TechStack = () => {
         })
     );
   }, []);
+
+  if (!isDesktop) return null;
 
   return (
     <div className="techstack">
