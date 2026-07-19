@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, useEffect, useState, Suspense } from "react";
+import { lazy, PropsWithChildren, useEffect, Suspense } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -13,27 +13,19 @@ import setSplitText from "./utils/splitText";
 const TechStack = lazy(() => import("./TechStack"));
 
 const MainContainer = ({ children }: PropsWithChildren) => {
-  const [isDesktopView, setIsDesktopView] = useState<boolean>(false);
-
   useEffect(() => {
-    const isDesktop = window.innerWidth > 1024;
-    setIsDesktopView(isDesktop);
-    
-    if (isDesktop) {
-      setSplitText();
-    }
+    setSplitText();
   }, []);
 
   return (
-    <div className="container-main" style={{ willChange: "transform" }}>
-      {isDesktopView && <Cursor />}
+    <div className="container-main">
+      <Cursor />
       <Navbar />
       <SocialIcons />
       
-      <div id="smooth-wrapper" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
-        <div id="smooth-content" style={{ willChange: "transform" }}>
+      <div id="smooth-wrapper">
+        <div id="smooth-content">
           <div className="container-main">
-            {/* Landing ke andar position maintain karne ke liye directly children pass kar rahe hain */}
             <Landing>
               {children}
             </Landing>
@@ -41,12 +33,9 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <WhatIDo />
             <Career />
             <Work />
-            {/* Mobile par blank screen crash rokne ke liye TechStack ko desktop conditional check de rahe hain */}
-            {isDesktopView && (
-              <Suspense fallback={<div style={{ color: 'white', textAlign: 'center' }}>Loading Tech Stack...</div>}>
-                <TechStack />
-              </Suspense>
-            )}
+            <Suspense fallback={<div>Loading....</div>}>
+              <TechStack />
+            </Suspense>
             <Contact />
           </div>
         </div>
