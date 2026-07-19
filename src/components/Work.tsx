@@ -118,10 +118,10 @@ const Work = () => {
                   
                   <div className="aspect-[9/16] w-full max-h-[48vh] rounded-xl overflow-hidden relative border border-gray-800 bg-black mt-2 shrink-0">
                     <iframe
-                      src="https://drive.google.com/file/d/1dG9YY8e5nW-4XEcmCkMFOHRGn_R1kFJY/preview"
+                      src="https://www.youtube.com/embed/WvHX83zdw0M?autoplay=1&mute=1&loop=1&playlist=WvHX83zdw0M&controls=0&modestbranding=1&rel=0"
                       className="absolute w-full border-0 rounded-xl"
                       style={{ height: '115%', top: '-7.5%', left: '0' }}
-                      allow="autoplay"
+                      allow="autoplay; encrypted-media"
                       title={project.title}
                     />
                   </div>
@@ -131,10 +131,10 @@ const Work = () => {
                   {/* Video Container Locked at the Top */}
                   <div className="aspect-[9/16] w-full max-h-[46vh] rounded-xl overflow-hidden relative border border-gray-800 bg-black shrink-0 mb-3">
                     <iframe
-                      src="https://drive.google.com/file/d/1PwiePmrgISunRijyre4WFN_1mS-ua-v2/preview"
+                      src="https://www.youtube.com/embed/HJoRHg1fC6Y?autoplay=1&mute=1&loop=1&playlist=HJoRHg1fC6Y&controls=0&modestbranding=1&rel=0"
                       className="absolute w-full border-0 rounded-xl"
                       style={{ height: '115%', top: '-7.5%', left: '0' }}
-                      allow="autoplay"
+                      allow="autoplay; encrypted-media"
                       title={project.title}
                     />
                   </div>
@@ -160,14 +160,14 @@ const Work = () => {
                   {/* Video Container Locked at the Bottom */}
                   <div className="aspect-[9/16] w-full max-h-[48vh] rounded-xl overflow-hidden relative border border-gray-800 bg-black shrink-0">
                     <iframe
-                      src="https://drive.google.com/file/d/1H_M73G65QVp-ueyTXZ9WeIJsLEGHVM6C/preview"
+                      src="https://www.youtube.com/embed/WKpHTQXTTjM?autoplay=1&mute=1&loop=1&playlist=WKpHTQXTTjM&controls=0&modestbranding=1&rel=0"
                       className="absolute w-full border-0 rounded-xl"
                       style={{
-                        height: '115%', // Scaled to bypass Google Drive's vertical header/footer bars
-                        top: '-7.5%',    // Perfectly centers the portrait clip vertically
+                        height: '115%',
+                        top: '-7.5%',
                         left: '0',
                       }}
-                      allow="autoplay"
+                      allow="autoplay; encrypted-media"
                       title={project.title}
                     />
                   </div>
