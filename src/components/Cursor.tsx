@@ -24,41 +24,51 @@ const Cursor = () => {
 
     window.addEventListener("mousemove", onMouseMove);
 
-    const links = document.querySelectorAll("[data-cursor]");
-    links.forEach((item) => {
-      const element = item as HTMLElement;
-      
-      const onMouseOver = () => {
-        const rect = element.getBoundingClientRect();
+    // Event delegation for mouseover/mouseout to handle dynamic mounts cleanly
+    const onMouseOver = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest("[data-cursor]") as HTMLElement;
+      if (!target) return;
 
-        if (element.dataset.cursor === "icons") {
-          cursor.classList.add("cursor-icons");
-          hover = true;
-          gsap.to(cursor, {
-            x: rect.left,
-            y: rect.top,
-            duration: 0.25,
-            ease: "power2.out",
-            overwrite: "auto"
-          });
-          cursor.style.setProperty("--cursorH", `${rect.height}px`);
-        }
-        if (element.dataset.cursor === "disable") {
-          cursor.classList.add("cursor-disable");
-        }
-      };
+      const rect = target.getBoundingClientRect();
 
-      const onMouseOut = () => {
-        cursor.classList.remove("cursor-disable", "cursor-icons");
-        hover = false;
-      };
+      if (target.dataset.cursor === "icons") {
+        cursor.classList.add("cursor-icons");
+        hover = true;
+        gsap.to(cursor, {
+          x: rect.left,
+          y: rect.top,
+          duration: 0.25,
+          ease: "power2.out",
+          overwrite: "auto"
+        });
+        cursor.style.setProperty("--cursorH", `${rect.height}px`);
+      }
+      if (target.dataset.cursor === "disable") {
+        cursor.classList.add("cursor-disable");
+      }
+    };
 
-      element.addEventListener("mouseover", onMouseOver);
-      element.addEventListener("mouseout", onMouseOut);
-    });
+    const onMouseOut = (e: MouseEvent) => {
+      // Find if we are moving to a target inside the same data-cursor element
+      const related = e.relatedTarget as HTMLElement;
+      const currentTarget = (e.target as HTMLElement).closest("[data-cursor]");
+      const newTarget = related ? related.closest("[data-cursor]") : null;
+
+      if (currentTarget && currentTarget === newTarget) {
+        return; // Still inside the same element, ignore
+      }
+
+      cursor.classList.remove("cursor-disable", "cursor-icons");
+      hover = false;
+    };
+
+    window.addEventListener("mouseover", onMouseOver);
+    window.addEventListener("mouseout", onMouseOut);
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseover", onMouseOver);
+      window.removeEventListener("mouseout", onMouseOut);
     };
   }, []);
 

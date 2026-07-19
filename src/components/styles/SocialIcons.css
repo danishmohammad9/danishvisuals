@@ -101,3 +101,23 @@ div.resume-button span {
     margin-top: -1.5px;
   }
 }
+
+.social-icon-glow {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(194, 164, 255, 0.4) 0%, rgba(194, 164, 255, 0) 70%);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  z-index: 1;
+  will-change: left, top, transform, opacity;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  opacity: 0;
+  box-shadow: 0 0 25px 8px rgba(194, 164, 255, 0.25);
+}
+.social-icon-glow.active {
+  transform: translate(-50%, -50%) scale(1.1);
+  opacity: 1;
+}
+
