@@ -121,15 +121,3 @@ body {
     font-size: 40px;
   }
 }
-
-/* Mobile GPU layer optimization to enforce hardware acceleration and prevent canvas/iframe redraw blackouts */
-.container-main,
-.work-section,
-.work-container,
-.work-flex,
-.work-box {
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  will-change: transform;
-}
-

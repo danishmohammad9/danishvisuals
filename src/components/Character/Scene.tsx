@@ -102,12 +102,11 @@ const Scene = () => {
         });
       };
 
-      const isMobileDevice = typeof window !== "undefined" && window.innerWidth <= 1024;
       document.addEventListener("mousemove", (event) => {
         onMouseMove(event);
       });
       const landingDiv = document.getElementById("landingDiv");
-      if (landingDiv && !isMobileDevice) {
+      if (landingDiv) {
         landingDiv.addEventListener("touchstart", onTouchStart);
         landingDiv.addEventListener("touchend", onTouchEnd);
       }
@@ -145,10 +144,8 @@ const Scene = () => {
         }
         if (landingDiv) {
           document.removeEventListener("mousemove", onMouseMove);
-          if (!isMobileDevice) {
-            landingDiv.removeEventListener("touchstart", onTouchStart);
-            landingDiv.removeEventListener("touchend", onTouchEnd);
-          }
+          landingDiv.removeEventListener("touchstart", onTouchStart);
+          landingDiv.removeEventListener("touchend", onTouchEnd);
         }
       };
     }
