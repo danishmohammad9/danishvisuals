@@ -35,7 +35,8 @@ const Scene = () => {
         precision: isMobile ? "mediump" : "highp",
       });
       renderer.setSize(container.width, container.height);
-      renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 1.2) : window.devicePixelRatio);
+      renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 1) : window.devicePixelRatio);
+      renderer.shadowMap.enabled = !isMobile;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1;
       canvasDiv.current.appendChild(renderer.domElement);

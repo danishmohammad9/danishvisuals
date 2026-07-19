@@ -28,11 +28,12 @@ const setCharacter = (
           async (gltf) => {
             character = gltf.scene;
             await renderer.compileAsync(character, camera, scene);
+            const isDesktop = typeof window !== "undefined" && window.innerWidth > 1024;
             character.traverse((child: any) => {
               if (child.isMesh) {
                 const mesh = child as THREE.Mesh;
-                child.castShadow = true;
-                child.receiveShadow = true;
+                child.castShadow = isDesktop;
+                child.receiveShadow = isDesktop;
                 mesh.frustumCulled = true;
               }
             });
