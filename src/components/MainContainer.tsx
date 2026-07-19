@@ -19,15 +19,9 @@ const MainContainer = ({ children }: PropsWithChildren) => {
     }
   }, []);
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 1024;
-
   return (
     <div className="container-main">
-      {/* Cursor filter */}
-      <div style={isMobile ? { display: 'none' } : {}}>
-        <Cursor />
-      </div>
-      
+      <Cursor />
       <Navbar />
       <SocialIcons />
       
@@ -42,12 +36,9 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Career />
             <Work />
             
-            {/* Mobile par dynamic crash rokne ke liye explicit check */}
-            <div style={isMobile ? { display: 'none', pointerEvents: 'none', visibility: 'hidden' } : {}}>
-              <Suspense fallback={<div>Loading Tech Stack....</div>}>
-                <TechStack />
-              </Suspense>
-            </div>
+            <Suspense fallback={<div>Loading Tech Stack....</div>}>
+              <TechStack />
+            </Suspense>
             
             <Contact />
           </div>
