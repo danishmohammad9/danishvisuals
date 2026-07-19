@@ -33,6 +33,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       <div id="smooth-wrapper" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
         <div id="smooth-content" style={{ willChange: "transform" }}>
           <div className="container-main">
+            {/* Landing ke andar position maintain karne ke liye directly children pass kar rahe hain */}
             <Landing>
               {children}
             </Landing>
@@ -40,8 +41,9 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <WhatIDo />
             <Career />
             <Work />
+            {/* Mobile par blank screen crash rokne ke liye TechStack ko desktop conditional check de rahe hain */}
             {isDesktopView && (
-              <Suspense fallback={<div>Loading....</div>}>
+              <Suspense fallback={<div style={{ color: 'white', textAlign: 'center' }}>Loading Tech Stack...</div>}>
                 <TechStack />
               </Suspense>
             )}
