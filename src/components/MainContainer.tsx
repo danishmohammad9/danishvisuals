@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, useEffect, useState, Suspense } from "react";
+import { lazy, PropsWithChildren, useEffect, Suspense } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -13,24 +13,15 @@ import setSplitText from "./utils/splitText";
 const TechStack = lazy(() => import("./TechStack"));
 
 const MainContainer = ({ children }: PropsWithChildren) => {
-  const [isDesktop, setIsDesktop] = useState<boolean>(false);
-  const [isClient, setIsClient] = useState<boolean>(false);
-
   useEffect(() => {
-    setIsClient(true);
-    if (typeof window !== "undefined") {
-      const desktopCheck = window.innerWidth > 1024;
-      setIsDesktop(desktopCheck);
-      
-      if (desktopCheck) {
-        setSplitText();
-      }
+    if (typeof window !== "undefined" && window.innerWidth > 1024) {
+      setSplitText();
     }
   }, []);
 
   return (
     <div className="container-main">
-      {isClient && isDesktop && <Cursor />}
+      <Cursor />
       <Navbar />
       <SocialIcons />
       
@@ -44,14 +35,9 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <WhatIDo />
             <Career />
             <Work />
-            
-            {/* TechStack particle heavy animation ko bhi strictly desktop tak limit kiya */}
-            {isClient && isDesktop ? (
-              <Suspense fallback={<div>Loading Tech Stack....</div>}>
-                <TechStack />
-              </Suspense>
-            ) : null}
-            
+            <Suspense fallback={<div>Loading Tech Stack....</div>}>
+              <TechStack />
+            </Suspense>
             <Contact />
           </div>
         </div>
