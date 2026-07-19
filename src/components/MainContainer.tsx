@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, useEffect, Suspense } from "react";
+import { lazy, PropsWithChildren, useEffect, useState, Suspense } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -13,18 +13,22 @@ import setSplitText from "./utils/splitText";
 const TechStack = lazy(() => import("./TechStack"));
 
 const MainContainer = ({ children }: PropsWithChildren) => {
+  const [isDesktop, setIsDesktop] = useState<boolean>(true);
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth > 1024) {
-      setSplitText();
+    if (typeof window !== "undefined") {
+      const desktopCheck = window.innerWidth > 1024;
+      setIsDesktop(desktopCheck);
+      
+      if (desktopCheck) {
+        setSplitText();
+      }
     }
   }, []);
 
   return (
     <div className="container-main">
-      {/* Cursor ko mobile par responsive hide karne ke liye wrap kiya */}
-      <div className="hidden md:block">
-        <Cursor />
-      </div>
+      {isDesktop && <Cursor />}
       <Navbar />
       <SocialIcons />
       
@@ -39,12 +43,12 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Career />
             <Work />
             
-            {/* TechStack ko mobile par safe rakhne ke liye wrap kiya taaki phone crash na ho */}
-            <div className="hidden md:block">
+            {/* Strict filter: Mobile par TechStack memory mein load hi nahi hoga */}
+            {isDesktop ? (
               <Suspense fallback={<div>Loading Tech Stack....</div>}>
                 <TechStack />
               </Suspense>
-            </div>
+            ) : null}
             
             <Contact />
           </div>
