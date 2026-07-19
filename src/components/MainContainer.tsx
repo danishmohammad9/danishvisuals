@@ -1,3 +1,4 @@
+// Pehli line ko change karke isme Suspense add karo
 import { lazy, PropsWithChildren, useEffect, Suspense } from "react";
 import About from "./About";
 import Career from "./Career";
