@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, Suspense, useEffect, useState } from "react";
+import { lazy, PropsWithChildren, useEffect, useState } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -16,41 +16,26 @@ const MainContainer = ({ children }: PropsWithChildren) => {
   const [isDesktopView, setIsDesktopView] = useState<boolean>(false);
 
   useEffect(() => {
-    // Initial check
     const isDesktop = window.innerWidth > 1024;
     setIsDesktopView(isDesktop);
     
-    // Split text sirf desktop par chalayenge taaki mobile crash na ho
     if (isDesktop) {
       setSplitText();
     }
-
-    const resizeHandler = () => {
-      const checkDesktop = window.innerWidth > 1024;
-      setIsDesktopView(checkDesktop);
-      if (checkDesktop) {
-        setSplitText();
-      }
-    };
-
-    window.addEventListener("resize", resizeHandler);
-    return () => {
-      window.removeEventListener("resize", resizeHandler);
-    };
   }, []);
 
   return (
-    <div className="container-main">
+    <div className="container-main" style={{ willChange: "transform" }}>
       {isDesktopView && <Cursor />}
       <Navbar />
       <SocialIcons />
       
-      {/* ScrollSmoother wrapper ko mobile par simple div treat kar rahe hain */}
-      <div id={isDesktopView ? "smooth-wrapper" : "mobile-wrapper"}>
-        <div id={isDesktopView ? "smooth-content" : "mobile-content"}>
+      <div id="smooth-wrapper" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
+        <div id="smooth-content" style={{ willChange: "transform" }}>
           <div className="container-main">
+            {/* Yahan bina kisi condition ke children (Character) ko wapas render kar rahe hain */}
             <Landing>
-              {!isDesktopView && children}
+              {children}
             </Landing>
             <About />
             <WhatIDo />
