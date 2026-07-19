@@ -53,67 +53,44 @@ const MobileTechStack = () => {
 };
 
 const MainContainer = ({ children }: MainContainerProps) => {
-  const [isDesktop, setIsDesktop] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleResize = () => {
-        setIsDesktop(window.innerWidth > 1024);
+        setIsMobile(window.innerWidth <= 1024);
       };
-
-      // Set initial value on mount
+      
       handleResize();
-
       window.addEventListener("resize", handleResize);
+
+      // Initialize split text animations for paragraph elements
+      setSplitText();
+
       return () => {
         window.removeEventListener("resize", handleResize);
       };
     }
   }, []);
 
-  useEffect(() => {
-    if (isDesktop) {
-      // Let the DOM render first, then split text
-      const timer = setTimeout(() => {
-        setSplitText();
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [isDesktop]);
-
   return (
-    <div className="container-main">
-      {isDesktop && <Cursor />}
+    <div className="container-main" style={{ scrollBehavior: "smooth" }}>
+      {!isMobile && <Cursor />}
       <Navbar />
       <SocialIcons />
 
-      {isDesktop ? (
-        <div id="smooth-wrapper">
-          <div id="smooth-content">
-            <div className="container-main">
-              <Landing>{children}</Landing>
-              <About />
-              <WhatIDo />
-              <Career />
-              <Work />
-              <Suspense fallback={<div>Loading Tech Stack....</div>}>
-                <TechStack />
-              </Suspense>
-              <Contact />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="container-main">
-          <Landing>{children}</Landing>
-          <About />
-          <WhatIDo />
-          <Career />
-          <Work />
-          <MobileTechStack />
-          <Contact />
-        </div>
-      )}
+      <Landing>{children}</Landing>
+      <About />
+      <WhatIDo />
+      <Career />
+      <Work />
+      
+      {/* Conditionally mount TechStack based on viewport width */}
+      <Suspense fallback={<div>Loading Tech Stack....</div>}>
+        {isMobile ? <MobileTechStack /> : <TechStack />}
+      </Suspense>
+
+      <Contact />
     </div>
   );
 };
