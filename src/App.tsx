@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import "./App.css";
 
 const CharacterModel = lazy(() => import("./components/Character"));
@@ -6,26 +6,20 @@ const MainContainer = lazy(() => import("./components/MainContainer"));
 import { LoadingProvider } from "./context/LoadingProvider";
 
 const App = () => {
-  const [isDesktop, setIsDesktop] = useState<boolean>(true); // Default true taaki desktop compilation fail na ho
-
-  useEffect(() => {
-    // Exact client side width calculation: agar mobile screen (1024px se choti) hai toh false ho jayega
-    if (typeof window !== "undefined") {
-      setIsDesktop(window.innerWidth > 1024);
-    }
-  }, []);
+  // Mobile check directly bina state ke render helper ke liye
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 1024;
 
   return (
     <>
       <LoadingProvider>
         <Suspense fallback={<div style={{ color: 'white', textAlign: 'center', marginTop: '20%' }}>Loading...</div>}>
           <MainContainer>
-            {/* JavaScript conditional rendering: Agar mobile hai toh Character background load hi nahi hoga */}
-            {isDesktop ? (
+            {/* Agar mobile screen hai toh Three.js elements ko physically gayab rakhega taaki memory crash na ho */}
+            <div style={isMobile ? { display: 'none', pointerEvents: 'none', visibility: 'hidden' } : {}}>
               <Suspense fallback={null}>
                 <CharacterModel />
               </Suspense>
-            ) : null}
+            </div>
           </MainContainer>
         </Suspense>
       </LoadingProvider>

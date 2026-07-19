@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, useEffect, useState, Suspense } from "react";
+import { lazy, PropsWithChildren, useEffect, Suspense } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -13,22 +13,21 @@ import setSplitText from "./utils/splitText";
 const TechStack = lazy(() => import("./TechStack"));
 
 const MainContainer = ({ children }: PropsWithChildren) => {
-  const [isDesktop, setIsDesktop] = useState<boolean>(true);
-
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const desktopCheck = window.innerWidth > 1024;
-      setIsDesktop(desktopCheck);
-      
-      if (desktopCheck) {
-        setSplitText();
-      }
+    if (typeof window !== "undefined" && window.innerWidth > 1024) {
+      setSplitText();
     }
   }, []);
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 1024;
+
   return (
     <div className="container-main">
-      {isDesktop && <Cursor />}
+      {/* Cursor filter */}
+      <div style={isMobile ? { display: 'none' } : {}}>
+        <Cursor />
+      </div>
+      
       <Navbar />
       <SocialIcons />
       
@@ -43,12 +42,12 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Career />
             <Work />
             
-            {/* Strict filter: Mobile par TechStack memory mein load hi nahi hoga */}
-            {isDesktop ? (
+            {/* Mobile par dynamic crash rokne ke liye explicit check */}
+            <div style={isMobile ? { display: 'none', pointerEvents: 'none', visibility: 'hidden' } : {}}>
               <Suspense fallback={<div>Loading Tech Stack....</div>}>
                 <TechStack />
               </Suspense>
-            ) : null}
+            </div>
             
             <Contact />
           </div>
