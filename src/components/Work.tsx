@@ -118,9 +118,10 @@ const Work = () => {
                   
                   <div className="aspect-[9/16] w-full max-h-[48vh] rounded-xl overflow-hidden relative border border-gray-800 bg-black mt-2 shrink-0">
                     <iframe
-                      src="https://www.youtube.com/embed/WvHX83zdw0M?autoplay=0&controls=1"
+                      src="https://www.youtube.com/embed/WvHX83zdw0M?autoplay=1&mute=1&loop=1&playlist=WvHX83zdw0M&controls=0&modestbranding=1&rel=0"
                       className="absolute w-full border-0 rounded-xl"
                       style={{ height: '115%', top: '-7.5%', left: '0' }}
+                      allow="autoplay; encrypted-media"
                       title={project.title}
                     />
                   </div>
@@ -130,9 +131,10 @@ const Work = () => {
                   {/* Video Container Locked at the Top */}
                   <div className="aspect-[9/16] w-full max-h-[46vh] rounded-xl overflow-hidden relative border border-gray-800 bg-black shrink-0 mb-3">
                     <iframe
-                      src="https://www.youtube.com/embed/HJoRHg1fC6Y?autoplay=0&controls=1"
+                      src="https://www.youtube.com/embed/HJoRHg1fC6Y?autoplay=1&mute=1&loop=1&playlist=HJoRHg1fC6Y&controls=0&modestbranding=1&rel=0"
                       className="absolute w-full border-0 rounded-xl"
                       style={{ height: '115%', top: '-7.5%', left: '0' }}
+                      allow="autoplay; encrypted-media"
                       title={project.title}
                     />
                   </div>
@@ -158,13 +160,14 @@ const Work = () => {
                   {/* Video Container Locked at the Bottom */}
                   <div className="aspect-[9/16] w-full max-h-[48vh] rounded-xl overflow-hidden relative border border-gray-800 bg-black shrink-0">
                     <iframe
-                      src="https://www.youtube.com/embed/WKpHTQXTTjM?autoplay=0&controls=1"
+                      src="https://www.youtube.com/embed/WKpHTQXTTjM?autoplay=1&mute=1&loop=1&playlist=WKpHTQXTTjM&controls=0&modestbranding=1&rel=0"
                       className="absolute w-full border-0 rounded-xl"
                       style={{
                         height: '115%',
                         top: '-7.5%',
                         left: '0',
                       }}
+                      allow="autoplay; encrypted-media"
                       title={project.title}
                     />
                   </div>
