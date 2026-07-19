@@ -9,8 +9,6 @@ import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import Work from "./Work";
 import setSplitText from "./utils/splitText";
-import { useLoading } from "../context/LoadingProvider";
-import { setProgress } from "./Loading";
 
 const TechStack = lazy(() => import("./TechStack"));
 
@@ -55,7 +53,6 @@ const MobileTechStack = () => {
 };
 
 const MainContainer = ({ children }: MainContainerProps) => {
-  const { setLoading } = useLoading();
   const [isDesktop, setIsDesktop] = useState<boolean>(false);
 
   useEffect(() => {
@@ -65,16 +62,9 @@ const MainContainer = ({ children }: MainContainerProps) => {
 
       if (desktop) {
         setSplitText();
-      } else {
-        // Run mobile simulated progress loading since CharacterModel is not mounted
-        const progress = setProgress((val) => setLoading(val));
-        const timer = setTimeout(() => {
-          progress.loaded();
-        }, 800);
-        return () => clearTimeout(timer);
       }
     }
-  }, [setLoading]);
+  }, []);
 
   return (
     <div className="container-main">
