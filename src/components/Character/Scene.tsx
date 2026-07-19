@@ -22,6 +22,19 @@ const Scene = () => {
   const [character, setChar] = useState<THREE.Object3D | null>(null);
   useEffect(() => {
       const isMobile = typeof window !== "undefined" && window.innerWidth <= 1024;
+      if (isMobile) {
+        let percent = 0;
+        const interval = setInterval(() => {
+          if (percent < 100) {
+            percent += Math.round(Math.random() * 15) + 5;
+            if (percent > 100) percent = 100;
+            setLoading(percent);
+          } else {
+            clearInterval(interval);
+          }
+        }, 50);
+        return () => clearInterval(interval);
+      }
 
       if (canvasDiv.current) {
         let rect = canvasDiv.current.getBoundingClientRect();

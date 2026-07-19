@@ -112,9 +112,7 @@ const MainContainer = ({ children }: MainContainerProps) => {
           <WhatIDo />
           <Career />
           <Work />
-          <div className="hidden lg:block">
-            <MobileTechStack />
-          </div>
+          <MobileTechStack />
           <Contact />
         </div>
       )}
