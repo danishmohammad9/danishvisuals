@@ -1,9 +1,10 @@
 import { lazy, Suspense } from "react";
+import { LoadingProvider } from "./context/LoadingProvider";
 import "./App.css";
 
-const CharacterModel = lazy(() => import("./components/Character"));
+// Clean, lazy-loaded container and 3D character components
 const MainContainer = lazy(() => import("./components/MainContainer"));
-import { LoadingProvider } from "./context/LoadingProvider";
+const CharacterModel = lazy(() => import("./components/Character"));
 
 const App = () => {
   return (

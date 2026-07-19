@@ -57,14 +57,29 @@ const MainContainer = ({ children }: MainContainerProps) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const desktop = window.innerWidth > 1024;
-      setIsDesktop(desktop);
+      const handleResize = () => {
+        setIsDesktop(window.innerWidth > 1024);
+      };
 
-      if (desktop) {
-        setSplitText();
-      }
+      // Set initial value on mount
+      handleResize();
+
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
     }
   }, []);
+
+  useEffect(() => {
+    if (isDesktop) {
+      // Let the DOM render first, then split text
+      const timer = setTimeout(() => {
+        setSplitText();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isDesktop]);
 
   return (
     <div className="container-main">

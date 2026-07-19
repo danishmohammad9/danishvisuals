@@ -10,28 +10,39 @@ const Loading = ({ percent }: { percent: number }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
 
-  if (percent >= 100) {
-    setTimeout(() => {
-      setLoaded(true);
-      setTimeout(() => {
+  // Safely trigger transitions when loading reaches 100% to avoid infinite render loops
+  useEffect(() => {
+    if (percent >= 100 && !loaded) {
+      const timer1 = setTimeout(() => {
+        setLoaded(true);
+      }, 600);
+      return () => clearTimeout(timer1);
+    }
+  }, [percent, loaded]);
+
+  useEffect(() => {
+    if (loaded && !isLoaded) {
+      const timer2 = setTimeout(() => {
         setIsLoaded(true);
       }, 1000);
-    }, 600);
-  }
+      return () => clearTimeout(timer2);
+    }
+  }, [loaded, isLoaded]);
 
   useEffect(() => {
     import("./utils/initialFX").then((module) => {
       if (isLoaded) {
         setClicked(true);
-        setTimeout(() => {
+        const timer3 = setTimeout(() => {
           if (module.initialFX) {
             module.initialFX();
           }
           setIsLoading(false);
         }, 900);
+        return () => clearTimeout(timer3);
       }
     });
-  }, [isLoaded]);
+  }, [isLoaded, setIsLoading]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const { currentTarget: target } = e;
